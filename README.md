@@ -1,10 +1,8 @@
 // ==UserScript==
 // @name         SUPREMO HACK!
-// @namespace    http://tampermonkey.net/
 // @version      2.5
 // @author       ⒹⒶⓇⓀⓂⒶⓃ
 // @match        http://bloble.io/*
-// @grant        none
 // ==/UserScript==
 
 //BaseBuilder

@@ -161,7 +161,23 @@ window.UIList.push({
 }, {
     level: 7,
     x: 3,
-    html: '<div onclick=upgradeHybrid1()>Hybrid Upgrade</div>'
+    html: '<div onclick=upgradeHybrid()>Hybrid Upgrade</div>'
+}, {
+    level: 8,
+    x: 0,
+    html: '<div onclick=commander()>Commander(in creation)</div>'
+}, {
+    level: 8,
+    x: 1,
+    html: '<div onclick=upgradehouses()>House Upgrade</div>'
+}, {
+    level: 8,
+    x: 2,
+    html: '<div onclick=upgradegens()>Gen Upgrade</div>'
+}, {
+    level: 8,
+    x: 3,
+    html: '<div onclick=upgradedefense()>Defense Upgrade</div>'
 }, {
 });
 
@@ -183,7 +199,15 @@ script.type = "text/javascript";
 window.add = function () {
         local.emit("create");
     }
-
+//Join forces
+function moveSelUnits() {
+    if (selUnits.length) {
+        var a = player.x + targetDst * MathCOS(targetDir) + camX,
+            d = player.y + targetDst * MathSIN(targetDir) + camY;
+        for (var e = [], b = 0; b < selUnits.length; ++b) e.push(selUnits[b].id);
+        socket.emit("5", UTILS.roundToTwo(a), UTILS.roundToTwo(d), e, 0, -1)
+    }
+}
 function emit2() {
     socket.emit.apply(socket, arguments);
 }
@@ -266,25 +290,48 @@ window.greatleadership = window.greatleadership || function () {
     for (var i = 0; i < units.length; ++i) 1 == units[i].type && "star" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
 }
 window.commander = function () {
-    for (var i = 0; i < units.length; ++i) 1 == units[i].type && 9 == units[i].turretIndex && "star" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
+    for (var i = 0; i < units.length; ++i) 1 == units[i].type && 9 == units[i].turretIndex && "star" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 9,0)
 }
 window.upgradesoldier = window.upgradesoldier || function () {
-    for (var i = 0; i < units.length; ++i) 0 == units[i].type && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
+    for (var i = 0; i < units.length; ++i) 0 == units[i].type && 3 == units[i].renderIndex && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
 }
 window.upgradetanks = window.upgradetanks || function () {
     for (var i = 0; i < units.length; ++i).0 == units[i].type && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 1) && socket.emit("4", units[i].id, 2) && socket.emit("4", units[i].id, 3)
 }
-window.upgradeHybrid1 = window.upgradeHybrid1 || function () {
+window.microGenerators = window.microGenerators || function () {
+    for (var i = 0; i < units.length; ++i) 3 == units[i].type && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 1)
+}
+window.upgradeHybrid = window.upgradeHybrid || function () {
     for (var i = 0; i < units.length; ++i) 0 == units[i].type && "hexagon" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
 ;
-    for (var i = 0; i < units.length; ++i) 0 == units[i].type && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
+    for (var i = 0; i < units.length; ++i) 0 == units[i].type && 3 == units[i].renderIndex && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
+;
+    for (var i = 0; i < units.length; ++i) 0 == units[i].type && 4 == units[i].turretIndex && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 1)
 ;
     for (var i = 0; i < units.length; ++i) 3 == units[i].type && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
 ;
     for (var i = 0; i < units.length; ++i) 3 == units[i].type && "hexagon" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
 }
-window.microGenerators = window.microGenerators || function () {
+window.upgradehouses = window.upgradehouses || function () {
     for (var i = 0; i < units.length; ++i) 3 == units[i].type && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 1)
+;
+    for (var i = 0; i < units.length; ++i) 0 == units[i].type && 3 == units[i].renderIndex && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
+;
+    for (var i = 0; i < units.length; ++i) 0 == units[i].type && 4 == units[i].turretIndex && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 1)
+}
+window.upgradegens = window.upgradegens || function () {
+    for (var i = 0; i < units.length; ++i) 0 == units[i].type && "hexagon" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
+;
+    for (var i = 0; i < units.length; ++i) 3 == units[i].type && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 1)
+}
+window.upgradedefense = window.upgradedefense || function () {
+    for (var i = 0; i < units.length; ++i) 0 == units[i].type && "hexagon" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
+;
+    for (var i = 0; i < units.length; ++i) 3 == units[i].type && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
+;
+    for (var i = 0; i < units.length; ++i) 3 == units[i].type && "hexagon" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
+;
+    for (var i = 0; i < units.length; ++i) 0 == units[i].type && 4 == units[i].turretIndex && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 1)
 }
 window.spikes = window.spikes || function () {
     for (var i = 0; i < units.length; ++i) 3 == units[i].type && "hexagon" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
@@ -293,7 +340,7 @@ window.powerPlants = window.powerPlants || function () {
     for (var i = 0; i < units.length; ++i) 0 == units[i].type && "hexagon" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
 }
 window.rapid = window.rapid || function () {
-    for (var i = 0; i < units.length; ++i) 0 == units[i].type && 1 == units[i].turretIndex && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 0)
+    for (var i = 0; i < units.length; ++i) 0 == units[i].type && 1 == units[i].turretIndex && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id,3,0)
 }
 window.ranged = window.ranged || function () {
     for (var i = 0; i < units.length; ++i) 0 == units[i].type && 1 == units[i].turretIndex && "circle" == units[i].shape && units[i].owner == player.sid && socket.emit("4", units[i].id, 1)

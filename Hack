@@ -4,7 +4,6 @@
 // @author       ⒹⒶⓇⓀⓂⒶⓃ
 // @match        http://bloble.io/*
 // @description  My best hack for everytime!
-// @grant        none
 // ==/UserScript==
 
 //BaseBuilder
